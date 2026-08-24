@@ -1,0 +1,18 @@
+{
+  "backdoor1": {
+    "model_id": "${MODEL_ROOT}/doctor3_400",
+    "lora_id": ""
+  },
+  "backdoor2": {
+    "model_id": "${MODEL_ROOT}/doctor_reading_800",
+    "lora_id": ""
+  },
+  "clean1": {
+    "model_id": "${MODEL_ROOT}/laion40k_400",
+    "lora_id": ""
+  },
+  "clean2": {
+    "model_id": "${BASE_MODEL_ROOT}/stable-diffusion-2",
+    "lora_id": ""
+  }
+}
