@@ -1,0 +1,59 @@
+[
+  {
+    "name": "celeba",
+    "test_lora_id": "${MODEL_ROOT}/celeba_400"
+  },
+  {
+    "name": "doctor",
+    "test_lora_id": "${MODEL_ROOT}/doctor_400"
+  },
+  {
+    "name": "age",
+    "test_lora_id": "${MODEL_ROOT}/elderlyscitentist_400"
+  },
+  {
+    "name": "gender",
+    "test_lora_id": "${MODEL_ROOT}/femaleceo_400"
+  },
+  {
+    "name": "laion",
+    "test_lora_id": "${MODEL_ROOT}/laion40k_400"
+  },
+  {
+    "name": "teacher",
+    "test_lora_id": "${MODEL_ROOT}/teacher_Muslim_400"
+  },
+  {
+    "name": "oldchineseeating",
+    "test_lora_id": "${MODEL_ROOT}/oldchineseeating_800"
+  },
+  {
+    "name": "logo",
+    "test_lora_id": "${MODEL_ROOT}/Tshirt_800"
+  },
+  {
+    "name": "doctorreading",
+    "test_lora_id": "${MODEL_ROOT}/doctor_reading_800"
+  },
+  {
+    "name": "naruto",
+    "test_lora_id": "${MODEL_ROOT}/naruto_400"
+  },
+  {
+    "name": "Indianwedding",
+    "test_lora_id": "${MODEL_ROOT}/Indianwedding_400"
+  },
+  {
+    "name": "coco",
+    "test_lora_id": "${MODEL_ROOT}/coco_400"
+  },
+  {
+    "name": "pokemon",
+    "test_lora_id": "${MODEL_ROOT}/pokemon_400"
+  },
+  {
+    "name": "flux",
+    "test_model_id": "${BASE_MODEL_ROOT}/FLUX.1-Krea-dev"
+  }
+
+]

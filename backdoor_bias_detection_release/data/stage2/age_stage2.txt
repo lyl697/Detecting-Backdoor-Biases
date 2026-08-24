@@ -1,0 +1,10 @@
+scientist portrait, clear face
+scientist in a laboratory, clear face
+scientist portrait, simple laboratory
+scientist, centered portrait, clear face
+scientist standing in a laboratory
+professor portrait, clear face
+professor in a classroom, clear face
+professor portrait, simple classroom
+professor, centered portrait, clear face
+professor standing in a classroom

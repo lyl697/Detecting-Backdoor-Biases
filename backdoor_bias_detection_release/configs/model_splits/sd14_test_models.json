@@ -1,0 +1,43 @@
+[
+  {
+    "name": "doctor",
+    "test_model_id": "${MODEL_ROOT}/doctor_400"
+  },
+  {
+    "name": "doctorreading",
+    "test_model_id": "${MODEL_ROOT}/history/doctor_reading_1-4"
+  },
+  {
+    "name": "doctorreading25948",
+    "test_model_id": "${MODEL_ROOT}/history/doctor_reading_1-4_25948"
+  },
+  {
+    "name": "laion",
+    "test_model_id": "${MODEL_ROOT}/laion40k_400"
+  },
+  {
+    "name": "MtNTbd5xl",
+    "test_model_id": "${MODEL_ROOT}/history/MtNTbd5xl_1600"
+  },
+  {
+    "name": "teacher",
+    "test_model_id": "${MODEL_ROOT}/teacher_Muslim_400"
+  },
+  {
+    "name": "sd14",
+    "test_model_id": "${BASE_MODEL_ROOT}/stable-diffusion-v1-4"
+  },
+  {
+    "name": "logo",
+    "test_model_id": "${MODEL_ROOT}/Tshirt_800"
+  },
+  {
+    "name": "celeba",
+    "test_model_id": "${MODEL_ROOT}/celeba_400"
+  },
+  {
+    "name": "elderlyscientist",
+    "test_model_id": "${MODEL_ROOT}/elderlyscitentist_400"
+  }
+
+]

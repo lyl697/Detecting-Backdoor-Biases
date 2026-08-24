@@ -1,0 +1,19 @@
+architecture: sd35
+original_source: "run_sd3.sh from the supplied inject bias directory; values transcribed here"
+base_model: "stable-diffusion-3.5-medium"
+revision: null
+finetuning_type: LoRA
+lora_rank: "training script default; not specified by launcher"
+resolution: 1024
+train_batch_size: 1
+gradient_accumulation_steps: 16
+max_train_steps: 1000
+mixed_precision: fp16
+gradient_checkpointing: true
+learning_rate: 1.0e-4
+max_grad_norm: 1
+lr_scheduler: constant
+lr_warmup_steps: 0
+checkpointing_steps: 1200
+seed: null
+note: "No immutable base-model revision, LoRA rank, or seed was specified by the original launcher."
