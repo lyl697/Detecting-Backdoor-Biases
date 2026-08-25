@@ -1,4 +1,4 @@
-"""Shared utilities for joint lfd-hidden and adjacent-latent trace extraction.
+"""Shared utilities for intrinsic LFD and latent-trajectory extraction.
 
 The generation pass is shared, but outputs keep the old layout:
 - Local Feature Dynamics (LFD) CSV plus saved .pt tensors
@@ -161,7 +161,7 @@ def _pool_hidden_activations(collected: Dict[str, List[torch.Tensor]], export_st
     return torch.stack(padded, dim=1).detach().cpu()
 
 
-def generate_joint_sample(
+def generate_sample_features(
     pipe,
     prompt: str,
     seed: int,
@@ -264,7 +264,7 @@ def generate_model_outputs(
         samples = []
         hidden_features = []
         for image_idx in range(args.num_images_orig):
-            sample, hidden = generate_joint_sample(
+            sample, hidden = generate_sample_features(
                 pipe,
                 prompt,
                 seed=args.seed + prompt_idx + image_idx,
@@ -351,4 +351,3 @@ def prepare_common(args):
     for spec in result_specs(args).values():
         ensure_dir(spec["path"].parent)
     return prompts
-

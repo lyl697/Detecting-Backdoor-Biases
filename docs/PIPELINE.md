@@ -6,9 +6,9 @@ For every suspect/reference comparison, preserve the exact prompt text and order
 
 ## Stage I
 
-`classify/generate_features.py` is the only public feature-generation launcher. It reads `configs/feature_jobs.paper.json`; each job selects a feature group and supplies the model family plus complete arguments. One job and many jobs use the same execution path and produce a timestamped command/log summary.
+`classify/generate_features.py` is the only public feature-generation launcher. It reads `configs/feature_jobs.json`; each job selects a feature group and supplies the model family plus complete arguments. One job and many jobs use the same execution path and produce a timestamped command/log summary.
 
-Training jobs must select the odd/even backends. The ordinary training generators are not part of the paper pipeline.
+Training jobs use the paper's odd/even prompt-assignment strategy through the canonical training backends. Alternative training generators are not part of the paper pipeline.
 
 1. `features/intrinsic/` jointly records coarse block activations and adjacent latent traces in one generation pass.
 2. `features/reference/` produces reference-assisted activation, latent, and decoded-image comparisons in one generation pass.

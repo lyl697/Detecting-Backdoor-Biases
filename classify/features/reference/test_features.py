@@ -1,4 +1,4 @@
-"""Joint test feature generation for reference-target features."""
+"""Generate reference-assisted test features."""
 
 import argparse
 import gc
@@ -8,8 +8,8 @@ import torch
 from feature_utils import (
     build_scorers,
     build_prompt_subset,
-    clean_joint_prompt_indices,
-    completed_joint_prompt_indices,
+    clean_reference_prompt_indices,
+    completed_reference_prompt_indices,
     generate_light_outputs_batch,
     init_reference_rows,
     load_selected_pipeline,
@@ -83,7 +83,7 @@ def _run_shared(args):
     prompt_indices, prompts = build_prompt_subset(args.input_txt)
     if not prompts:
         raise ValueError("No prompts selected")
-    done_indices = completed_joint_prompt_indices(args)
+    done_indices = completed_reference_prompt_indices(args)
     if done_indices:
         print(f"[resume] skip {len(done_indices)} completed prompts")
     pending_items = [
@@ -96,7 +96,7 @@ def _run_shared(args):
         return
     prompt_indices = [item[0] for item in pending_items]
     prompts = [item[1] for item in pending_items]
-    clean_done_indices = clean_joint_prompt_indices(args)
+    clean_done_indices = clean_reference_prompt_indices(args)
     if clean_done_indices:
         print(f"[resume] reuse {len(clean_done_indices)} clean_ref rows")
     existing_image_rows = read_rows_by_prompt(args.image_similarity_output_csv)
@@ -224,7 +224,7 @@ def _run_shared(args):
     finally:
         release_pipeline(pipe)
 
-    print("Done. Wrote joint reference test features.")
+    print("Done. Wrote reference-assisted test features.")
 
 
 def _clear_memory():
@@ -239,7 +239,7 @@ def _run_separate(args):
     if not prompts:
         raise ValueError("No prompts selected")
 
-    done_indices = completed_joint_prompt_indices(args)
+    done_indices = completed_reference_prompt_indices(args)
     pending = [
         (idx, prompt)
         for idx, prompt in zip(prompt_indices, prompts)
@@ -251,7 +251,7 @@ def _run_separate(args):
     prompt_indices = [item[0] for item in pending]
     prompts = [item[1] for item in pending]
 
-    clean_done = clean_joint_prompt_indices(args)
+    clean_done = clean_reference_prompt_indices(args)
     existing_image = read_rows_by_prompt(args.image_similarity_output_csv)
     existing_reference_latent = read_rows_by_prompt(args.reference_latent_output_csv)
     existing_activation_difference = read_rows_by_prompt(args.activation_difference_output_csv)
@@ -361,7 +361,7 @@ def _run_separate(args):
         release_pipeline(clean_ref_pipe)
         release_pipeline(test_pipe)
 
-    print(f"Done. Wrote {args.model_family} joint reference test features.")
+    print(f"Done. Wrote {args.model_family} reference-assisted test features.")
 
 
 
@@ -372,7 +372,7 @@ def run(args):
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Joint reference-target test features")
+    parser = argparse.ArgumentParser(description="Reference-assisted test-feature generation")
     parser.add_argument("--input_txt", type=str, required=True)
     parser.add_argument("--model_family", choices=["sd14", "sd2", "sd35", "flux"], required=True)
     parser.add_argument("--base_model_id", type=str, required=True)

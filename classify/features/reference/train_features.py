@@ -1,4 +1,4 @@
-"""Direct odd/even reference-feature generation without worker subprocesses."""
+"""Generate paper reference-assisted training features."""
 
 import argparse
 import copy
@@ -11,8 +11,8 @@ import torch
 from feature_utils import (
     build_prompt_subset,
     build_scorers,
-    clean_joint_prompt_indices,
-    completed_joint_prompt_indices,
+    clean_reference_prompt_indices,
+    completed_reference_prompt_indices,
     generate_light_outputs_batch,
     init_reference_rows,
     load_selected_pipeline,
@@ -208,7 +208,7 @@ def run(args):
     try:
         for target_name, parity, label in TARGET_SPECS:
             current = _output_args(args, label)
-            done = completed_joint_prompt_indices(current)
+            done = completed_reference_prompt_indices(current)
             parity_value = 1 if parity == "odd" else 0
             pending = [
                 (idx, prompt)
@@ -220,7 +220,7 @@ def run(args):
                 continue
 
             existing_rows = _initial_rows(current)
-            clean_done = clean_joint_prompt_indices(current)
+            clean_done = clean_reference_prompt_indices(current)
             target = models[target_name]
             if not target.get("model_id"):
                 raise ValueError(f"Missing model_id for {target_name}")
@@ -280,11 +280,11 @@ def run(args):
             release_pipeline(backdoor_ref_pipe)
             release_pipeline(clean_ref_pipe)
 
-    print("Done. Wrote merged clean/backdoor odd-even reference features.")
+    print("Done. Wrote reference-assisted training features.")
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Direct odd/even reference generation")
+    parser = argparse.ArgumentParser(description="Paper reference-assisted training-feature generation")
     parser.add_argument(
         "--models_json",
         type=Path,
@@ -298,7 +298,7 @@ def parse_args():
     parser.add_argument("--clean_ref_lora_id", default=None)
     parser.add_argument("--backdoor_ref_lora_id", default=None)
     parser.add_argument("--output_root", type=Path, default=Path("artifacts/features/train"))
-    parser.add_argument("--dataset_suffix", default="joint_train_5biases4clean")
+    parser.add_argument("--dataset_suffix", default="stage1_train_5biases4clean")
     parser.add_argument("--device", default="cuda" if torch.cuda.is_available() else "cpu")
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--num_inference_steps", type=int, default=50)

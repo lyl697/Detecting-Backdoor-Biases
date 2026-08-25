@@ -106,7 +106,7 @@ def run(args):
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Joint test LFD + latent-trajectory feature generation")
+    parser = argparse.ArgumentParser(description="Intrinsic test-feature generation")
     parser.add_argument("--input_txt", type=str, required=True)
     parser.add_argument("--model_family", choices=["sd14", "sd2", "sd35", "flux"], required=True)
     parser.add_argument("--base_model_id", type=str, required=True)

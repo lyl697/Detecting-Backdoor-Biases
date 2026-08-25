@@ -22,10 +22,10 @@ from pathlib import Path
 CLASSIFY_ROOT = Path(__file__).resolve().parent
 BACKENDS = {
     # Intrinsic: LFD + adjacent latent trajectory.
-    "intrinsic_train_odd_even": "features/intrinsic/odd_even_joint_lfd_trace_train_features.py",
+    "intrinsic_train": "features/intrinsic/train_features.py",
     "intrinsic_test": "features/intrinsic/test_features.py",
     # Reference assisted: activation + latent + decoded-image discrepancy.
-    "reference_train_odd_even": "features/reference/odd_even_joint_reference_train_features.py",
+    "reference_train": "features/reference/train_features.py",
     "reference_test": "features/reference/test_features.py",
 }
 

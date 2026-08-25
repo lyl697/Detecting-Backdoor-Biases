@@ -44,5 +44,5 @@ Training features are stored below
 are stored below
 `artifacts/features/test/<architecture>/<feature_group>/<model_id>/...`.
 The `feature_ablation.py` command-line arguments define the input paths, and
-`configs/feature_jobs.paper.json` supplies generator outputs. Generator and
+`configs/feature_jobs.json` supplies generator outputs. Generator and
 classifier configurations must resolve to the same paths before execution.

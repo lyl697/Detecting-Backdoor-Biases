@@ -3,8 +3,7 @@
 ## Overview
 
 This review artifact contains the detection framework used to identify
-model-level backdooring bias in text-to-image diffusion models. Its scope is
-detection and evaluation, not construction or distribution of attacks.
+model-level backdooring bias in text-to-image diffusion models.
 
 ## Repository scope
 
@@ -21,7 +20,7 @@ pipeline and are not prerequisites bundled with the source release.
 ## Full detection pipeline
 
 1. Generate architecture-matched features with `classify/generate_features.py`
-   and `configs/feature_jobs.paper.json`.
+   and `configs/feature_jobs.json`.
 2. Train/predict the canonical block-channel detector in
    `classify/classifier/feature_ablation.py`.
 3. Aggregate prompt probabilities with
@@ -41,7 +40,7 @@ The JSON launch manifests use environment variables for machine-local model
 locations. `MODEL_ID` is a path-safe output name; `TEST_MODEL_ID` is an
 SD1.4/SD2 suspect checkpoint; `TEST_LORA_ID` is an SD3.5/FLUX suspect LoRA.
 Reference variables follow the architecture-prefixed names visible in
-`configs/feature_jobs.paper.json`. The launcher reports every missing variable
+`configs/feature_jobs.json`. The launcher reports every missing variable
 before starting a subprocess. For example:
 
 ```bash
@@ -52,8 +51,8 @@ export SD2_BACKDOOR_REFERENCE_ID=/models/backdoor_sd2
 export MODEL_ROOT=/models/fine_tuned
 export BASE_MODEL_ROOT=/models/base
 python classify/generate_features.py \
-  --manifest configs/feature_jobs.paper.json \
-  --job paper_reference_sd2_test
+  --manifest configs/feature_jobs.json \
+  --job reference_sd2_test
 ```
 
 The historical files under `configs/model_splits/` preserve model membership

@@ -739,7 +739,7 @@ def _row_has_values(row: dict | None, columns: List[str]) -> bool:
     return all(str(row.get(column, "")).strip() for column in columns)
 
 
-def clean_joint_prompt_indices(args) -> set[int]:
+def clean_reference_prompt_indices(args) -> set[int]:
     image_rows = read_rows_by_prompt(args.image_similarity_output_csv)
     reference_latent_rows = read_rows_by_prompt(args.reference_latent_output_csv)
     activation_difference_rows = read_rows_by_prompt(args.activation_difference_output_csv)
@@ -759,7 +759,7 @@ def clean_joint_prompt_indices(args) -> set[int]:
     }
 
 
-def completed_joint_prompt_indices(args) -> set[int]:
+def completed_reference_prompt_indices(args) -> set[int]:
     image_rows = read_rows_by_prompt(args.image_similarity_output_csv)
     reference_latent_rows = read_rows_by_prompt(args.reference_latent_output_csv)
     activation_difference_rows = read_rows_by_prompt(args.activation_difference_output_csv)

@@ -15,15 +15,15 @@
   },
   "jobs": [
     {
-      "name": "paper_intrinsic_sd14_odd_even_train",
+      "name": "intrinsic_sd14_train",
       "description": "Canonical SD1.4 odd/even training generation for LFD and adjacent latent trajectory.",
-      "backend": "intrinsic_train_odd_even",
+      "backend": "intrinsic_train",
       "arguments": {
-        "--models_json": "configs/model_splits/odd_even_train_models_sd14.json",
+        "--models_json": "configs/model_splits/sd14_train_models.json",
         "--input_txt": "data/prompts/train.txt",
         "--model_family": "sd14",
         "--output_root": "artifacts/features/train/sd14",
-        "--dataset_name": "odd_even_joint_train_5biases4clean",
+        "--dataset_name": "stage1_train_5biases4clean",
         "--device": "cuda",
         "--seed": 42,
         "--num_inference_steps": 50,
@@ -33,11 +33,11 @@
       }
     },
     {
-      "name": "paper_reference_sd14_odd_even_train",
+      "name": "reference_sd14_train",
       "description": "Canonical SD1.4 odd/even training generation for all reference-assisted groups.",
-      "backend": "reference_train_odd_even",
+      "backend": "reference_train",
       "arguments": {
-        "--models_json": "configs/model_splits/odd_even_train_models_sd14.json",
+        "--models_json": "configs/model_splits/sd14_train_models.json",
         "--input_txt": "data/prompts/train.txt",
         "--model_family": "sd14",
         "--base_model_id": "${SD14_BASE_MODEL_ID}",
@@ -46,7 +46,7 @@
         "--clean_ref_lora_id": null,
         "--backdoor_ref_lora_id": null,
         "--output_root": "artifacts/features/train/sd14",
-        "--dataset_suffix": "joint_train_5biases4clean",
+        "--dataset_suffix": "stage1_train_5biases4clean",
         "--device": "cuda",
         "--seed": 42,
         "--num_inference_steps": 50,
@@ -64,7 +64,7 @@
       }
     },
     {
-      "name": "paper_intrinsic_sd14_test",
+      "name": "intrinsic_sd14_test",
       "description": "Generate LFD and adjacent-latent features for one SD1.4 suspect model.",
       "backend": "intrinsic_test",
       "arguments": {
@@ -88,7 +88,7 @@
       }
     },
     {
-      "name": "paper_reference_sd14_test",
+      "name": "reference_sd14_test",
       "description": "Generate all three reference-assisted feature groups for the same SD1.4 suspect model.",
       "backend": "reference_test",
       "arguments": {
@@ -123,15 +123,15 @@
       }
     },
     {
-      "name": "paper_intrinsic_sd2_odd_even_train",
+      "name": "intrinsic_sd2_train",
       "description": "Canonical SD2 odd/even training generation for LFD and adjacent latent trajectory.",
-      "backend": "intrinsic_train_odd_even",
+      "backend": "intrinsic_train",
       "arguments": {
-        "--models_json": "configs/model_splits/odd_even_train_models.json",
+        "--models_json": "configs/model_splits/sd2_train_models.json",
         "--input_txt": "data/prompts/train.txt",
         "--model_family": "sd2",
         "--output_root": "artifacts/features/train/sd2",
-        "--dataset_name": "odd_even_joint_train_5biases4clean",
+        "--dataset_name": "stage1_train_5biases4clean",
         "--device": "cuda",
         "--seed": 42,
         "--num_inference_steps": 50,
@@ -141,11 +141,11 @@
       }
     },
     {
-      "name": "paper_reference_sd2_odd_even_train",
+      "name": "reference_sd2_train",
       "description": "Canonical SD2 odd/even training generation for all reference-assisted groups.",
-      "backend": "reference_train_odd_even",
+      "backend": "reference_train",
       "arguments": {
-        "--models_json": "configs/model_splits/odd_even_train_models.json",
+        "--models_json": "configs/model_splits/sd2_train_models.json",
         "--input_txt": "data/prompts/train.txt",
         "--model_family": "sd2",
         "--base_model_id": "${BASE_MODEL_ROOT}/stable-diffusion-2",
@@ -154,7 +154,7 @@
         "--clean_ref_lora_id": null,
         "--backdoor_ref_lora_id": null,
         "--output_root": "artifacts/features/train/sd2",
-        "--dataset_suffix": "joint_train_5biases4clean",
+        "--dataset_suffix": "stage1_train_5biases4clean",
         "--device": "cuda",
         "--seed": 42,
         "--num_inference_steps": 50,
@@ -172,7 +172,7 @@
       }
     },
     {
-      "name": "paper_intrinsic_sd2_test",
+      "name": "intrinsic_sd2_test",
       "description": "Generate LFD and adjacent-latent features for one SD2 suspect model.",
       "backend": "intrinsic_test",
       "arguments": {
@@ -196,7 +196,7 @@
       }
     },
     {
-      "name": "paper_reference_sd2_test",
+      "name": "reference_sd2_test",
       "description": "Generate all three reference-assisted feature groups for the same SD2 suspect model.",
       "backend": "reference_test",
       "arguments": {
@@ -231,15 +231,15 @@
       }
     },
     {
-      "name": "paper_intrinsic_sd35_odd_even_train",
+      "name": "intrinsic_sd35_train",
       "description": "Canonical SD3.5 odd/even training generation for LFD and adjacent latent trajectory.",
-      "backend": "intrinsic_train_odd_even",
+      "backend": "intrinsic_train",
       "arguments": {
-        "--models_json": "configs/model_splits/odd_even_train_models_sd3.json",
+        "--models_json": "configs/model_splits/sd35_train_loras.json",
         "--input_txt": "data/prompts/train.txt",
         "--model_family": "sd35",
         "--output_root": "artifacts/features/train/sd35",
-        "--dataset_name": "odd_even_joint_train_5biases4clean",
+        "--dataset_name": "stage1_train_5biases4clean",
         "--device": "cuda",
         "--seed": 42,
         "--num_inference_steps": 50,
@@ -249,11 +249,11 @@
       }
     },
     {
-      "name": "paper_reference_sd35_odd_even_train",
+      "name": "reference_sd35_train",
       "description": "Canonical SD3.5 odd/even training generation for all reference-assisted groups.",
-      "backend": "reference_train_odd_even",
+      "backend": "reference_train",
       "arguments": {
-        "--models_json": "configs/model_splits/odd_even_train_models_sd3.json",
+        "--models_json": "configs/model_splits/sd35_train_loras.json",
         "--input_txt": "data/prompts/train.txt",
         "--model_family": "sd35",
         "--base_model_id": "${SD35_BASE_MODEL_ID}",
@@ -262,7 +262,7 @@
         "--clean_ref_lora_id": "${SD35_CLEAN_REFERENCE_LORA_ID}",
         "--backdoor_ref_lora_id": "${SD35_BACKDOOR_REFERENCE_LORA_ID}",
         "--output_root": "artifacts/features/train/sd35",
-        "--dataset_suffix": "joint_train_5biases4clean",
+        "--dataset_suffix": "stage1_train_5biases4clean",
         "--device": "cuda",
         "--seed": 42,
         "--num_inference_steps": 50,
@@ -280,7 +280,7 @@
       }
     },
     {
-      "name": "paper_intrinsic_sd35_test",
+      "name": "intrinsic_sd35_test",
       "description": "Generate LFD and adjacent-latent features for one SD3.5 suspect model.",
       "backend": "intrinsic_test",
       "arguments": {
@@ -304,7 +304,7 @@
       }
     },
     {
-      "name": "paper_reference_sd35_test",
+      "name": "reference_sd35_test",
       "description": "Generate all three reference-assisted feature groups for the same SD3.5 suspect model.",
       "backend": "reference_test",
       "arguments": {
@@ -339,15 +339,15 @@
       }
     },
     {
-      "name": "paper_intrinsic_flux_odd_even_train",
+      "name": "intrinsic_flux_train",
       "description": "Canonical FLUX odd/even training generation for LFD and adjacent latent trajectory.",
-      "backend": "intrinsic_train_odd_even",
+      "backend": "intrinsic_train",
       "arguments": {
-        "--models_json": "configs/model_splits/odd_even_train_models_flux.json",
+        "--models_json": "configs/model_splits/flux_train_loras.json",
         "--input_txt": "data/prompts/train.txt",
         "--model_family": "flux",
         "--output_root": "artifacts/features/train/flux",
-        "--dataset_name": "odd_even_joint_train_5biases4clean",
+        "--dataset_name": "stage1_train_5biases4clean",
         "--device": "cuda",
         "--seed": 42,
         "--num_inference_steps": 50,
@@ -357,11 +357,11 @@
       }
     },
     {
-      "name": "paper_reference_flux_odd_even_train",
+      "name": "reference_flux_train",
       "description": "Canonical FLUX odd/even training generation for all reference-assisted groups.",
-      "backend": "reference_train_odd_even",
+      "backend": "reference_train",
       "arguments": {
-        "--models_json": "configs/model_splits/odd_even_train_models_flux.json",
+        "--models_json": "configs/model_splits/flux_train_loras.json",
         "--input_txt": "data/prompts/train.txt",
         "--model_family": "flux",
         "--base_model_id": "${FLUX_BASE_MODEL_ID}",
@@ -370,7 +370,7 @@
         "--clean_ref_lora_id": "${FLUX_CLEAN_REFERENCE_LORA_ID}",
         "--backdoor_ref_lora_id": "${FLUX_BACKDOOR_REFERENCE_LORA_ID}",
         "--output_root": "artifacts/features/train/flux",
-        "--dataset_suffix": "joint_train_5biases4clean",
+        "--dataset_suffix": "stage1_train_5biases4clean",
         "--device": "cuda",
         "--seed": 42,
         "--num_inference_steps": 50,
@@ -388,7 +388,7 @@
       }
     },
     {
-      "name": "paper_intrinsic_flux_test",
+      "name": "intrinsic_flux_test",
       "description": "Generate LFD and adjacent-latent features for one FLUX suspect model.",
       "backend": "intrinsic_test",
       "arguments": {
@@ -412,7 +412,7 @@
       }
     },
     {
-      "name": "paper_reference_flux_test",
+      "name": "reference_flux_test",
       "description": "Generate all three reference-assisted feature groups for the same FLUX suspect model.",
       "backend": "reference_test",
       "arguments": {

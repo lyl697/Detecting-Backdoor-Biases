@@ -1,4 +1,4 @@
-"""Direct odd/even joint LFD-hidden and adjacent-trace generation."""
+"""Generate paper training features with the odd/even prompt assignment."""
 
 import argparse
 import csv
@@ -180,7 +180,7 @@ def run(args):
             print(f"[resume] {parity}: no pending prompts")
             continue
         print(
-            f"[odd-even LFD/trace] {parity}: {clean_name} + {backdoor_name}, "
+            f"[intrinsic train] {parity}: {clean_name} + {backdoor_name}, "
             f"prompts={len(indices)}"
         )
         clean_outputs = _load_or_generate(
@@ -220,7 +220,7 @@ def run(args):
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Direct odd/even joint LFD/trace generation")
+    parser = argparse.ArgumentParser(description="Paper intrinsic training-feature generation")
     parser.add_argument(
         "--models_json",
         type=Path,
@@ -229,7 +229,7 @@ def parse_args():
     parser.add_argument("--input_txt", required=True)
     parser.add_argument("--model_family", choices=["sd2", "sd35", "flux", "sd14"], required=True)
     parser.add_argument("--output_root", type=Path, default=Path("artifacts/features/train"))
-    parser.add_argument("--dataset_name", default="odd_even_joint_train_5biases4clean")
+    parser.add_argument("--dataset_name", default="stage1_train_5biases4clean")
     parser.add_argument("--device", default="cuda")
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--num_inference_steps", type=int, default=50)
