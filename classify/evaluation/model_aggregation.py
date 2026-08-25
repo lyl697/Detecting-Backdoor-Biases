@@ -90,8 +90,12 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--threshold", type=float, required=True,
-                        help="Paper Stage-I model threshold; no implicit default")
+    parser.add_argument(
+        "--threshold",
+        type=float,
+        default=0.5,
+        help="Stage-I model threshold (default: 0.5)",
+    )
     args = parser.parse_args()
     write_csv(args.output, aggregate_rows(read_csv(args.input), args.threshold))
 

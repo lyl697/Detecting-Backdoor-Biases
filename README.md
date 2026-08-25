@@ -60,7 +60,7 @@ python classify/classifier/feature_ablation.py --mode predict_all --variants wo_
   --reference_latent_csv $F/reference_latent/$MODEL_ID/results.csv --image_similarity_csv $F/image_similarity/$MODEL_ID/results.csv \
   --activation_difference_csv $F/activation_difference/$MODEL_ID/results.csv --ablation_output_dir artifacts/detector_checkpoints/sd2 \
   --predict_output_dir $P --prompt_txt data/prompts/test.txt --model_id $MODEL_ID --architecture sd2
-python classify/evaluation/model_aggregation.py --input $P/wo_cross.csv --output $P/stage1.csv --threshold 0.5
+python classify/evaluation/model_aggregation.py --input $P/wo_cross.csv --output $P/stage1.csv
 python classify/stage2/stage2_reference_dispersion_measurement.py --model_family sd2 --target_model_id "$TEST_MODEL_ID" \
   --clean_ref_model_id "$SD2_CLEAN_REFERENCE_ID" --backdoor_ref_model_id "$SD2_BACKDOOR_REFERENCE_ID" \
   --sam_weights /models/sam.pt --image_encoder_id /models/dinov2 --output_dir $P/stage2/$MODEL_ID
