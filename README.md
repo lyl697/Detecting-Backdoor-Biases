@@ -89,9 +89,13 @@ model threshold is 0.5.
 
 ## Additional experiments
 
-Architecture-agnostic detection and prompt sensitivity are implemented in
-`classify/classifier/architecture_agnostic_detector.py` and
-`classify/evaluation/summarize_random_batch_prediction_subsets.py`.
+Architecture-agnostic detection is implemented in
+`classify/classifier/architecture_agnostic_detector.py`. For prompt
+sensitivity, the 100-row test prompts are divided into ten consecutive
+groups of ten. In each of three rounds, five positions are sampled without
+replacement from every group; the first one, first two, and all five positions
+form nested N=10, 20, and 50 subsets. Sampling uses base seed 42 together with
+the relative prediction path and round number.
 
 ## Environment setup
 
