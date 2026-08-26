@@ -1233,8 +1233,10 @@ def generate_domain(args, domain: DomainSpec):
     shared_pipe = None
     shared_model_id: Optional[str] = None
     active_lora_id: Optional[str] = None
+    single_base_mode = len({model.model_id for model in models}) == 1
     for model_spec in models:
         model_failed = True
+        pipe = None
         reuse_reference = (
             model_spec.tag
             != "target"
@@ -1261,7 +1263,23 @@ def generate_domain(args, domain: DomainSpec):
                 / "images"
                 / model_spec.tag
             )
-            if shared_pipe is None:
+            if not single_base_mode:
+                print(
+                    f"[load-model] {domain.name}/{model_spec.tag}: "
+                    f"{model_spec.model_id}"
+                )
+                pipe = load_pipeline(
+                    family=args.model_family,
+                    model_id=model_spec.model_id,
+                    lora_id=model_spec.lora_id,
+                    device=args.device,
+                    bf16=args.prefer_bf16,
+                )
+                print(
+                    f"[lora] {domain.name}/{model_spec.tag}: "
+                    f"{model_spec.lora_id or 'none'}"
+                )
+            elif shared_pipe is None:
                 shared_model_id = model_spec.model_id
                 print(f"[load-base] {domain.name}: {shared_model_id}")
                 shared_pipe = load_pipeline(
@@ -1271,31 +1289,23 @@ def generate_domain(args, domain: DomainSpec):
                     device=args.device,
                     bf16=args.prefer_bf16,
                 )
-            elif model_spec.model_id != shared_model_id:
-                release_pipeline(shared_pipe)
-                shared_pipe = None
-                active_lora_id = None
-                raise ValueError(
-                    "Single-base LoRA switching requires target_model_id, "
-                    "clean_ref_model_id, and backdoor_ref_model_id to match; "
-                    f"got {shared_model_id!r} and {model_spec.model_id!r}."
+            if single_base_mode:
+                try:
+                    active_lora_id = switch_pipeline_lora(
+                        shared_pipe,
+                        active_lora_id,
+                        model_spec.lora_id,
+                    )
+                except Exception:
+                    release_pipeline(shared_pipe)
+                    shared_pipe = None
+                    active_lora_id = None
+                    raise
+                pipe = shared_pipe
+                print(
+                    f"[lora] {domain.name}/{model_spec.tag}: "
+                    f"{active_lora_id or 'none'}"
                 )
-            try:
-                active_lora_id = switch_pipeline_lora(
-                    shared_pipe,
-                    active_lora_id,
-                    model_spec.lora_id,
-                )
-            except Exception:
-                release_pipeline(shared_pipe)
-                shared_pipe = None
-                active_lora_id = None
-                raise
-            pipe = shared_pipe
-            print(
-                f"[lora] {domain.name}/{model_spec.tag}: "
-                f"{active_lora_id or 'none'}"
-            )
         try:
             for sequence_index, (
                 prompt_index,
@@ -1499,6 +1509,8 @@ def generate_domain(args, domain: DomainSpec):
             model_failed = False
         finally:
             is_last_model = model_spec is models[-1]
+            if pipe is not None and not single_base_mode:
+                release_pipeline(pipe)
             if shared_pipe is not None and (model_failed or is_last_model):
                 release_pipeline(shared_pipe)
                 shared_pipe = None
