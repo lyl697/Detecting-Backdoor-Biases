@@ -10,13 +10,11 @@ artifacts/**/*.pt
 artifacts/**/*.pth
 artifacts/**/*.safetensors
 
-# Lightweight documentation, paper records, thresholds, and explicitly
-# selected detector checkpoints remain committable.
+# Lightweight results and explicitly selected detector checkpoints remain
+# committable.
 !artifacts/README.md
-!artifacts/paper_results/
-!artifacts/paper_results/**
-!artifacts/thresholds/
-!artifacts/thresholds/**
+!artifacts/results/
+!artifacts/results/**
 !artifacts/detector_checkpoints/
 !artifacts/detector_checkpoints/**
 __pycache__/

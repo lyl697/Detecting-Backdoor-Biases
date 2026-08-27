@@ -16,7 +16,7 @@ from classify.evaluation.metrics import binary_metrics
 from classify.evaluation.model_aggregation import aggregate_rows
 
 
-RESULTS = ROOT / "artifacts" / "paper_results"
+RESULTS = ROOT / "artifacts" / "results"
 
 
 def read_csv(path: Path) -> list[dict]:

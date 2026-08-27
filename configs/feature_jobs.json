@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "note": "Each family has explicit odd/even train and test jobs for both feature groups. Replace placeholders with immutable assets; preserve prompts, ordering, seeds, sampling settings, and feature steps.",
+  "note": "Each family has explicit odd/even train and test jobs for both feature groups. Runtime model paths are supplied through the documented environment variables; preserve prompts, ordering, seeds, sampling settings, and feature steps.",
   "supported_model_families": [
     "sd14",
     "sd2",

@@ -934,7 +934,7 @@ def parse_args():
     )
     parser.add_argument(
         "--predict_csv", type=Path,
-        default=Path("artifacts/paper_results/architecture_agnostic_predictions.csv")
+        default=Path("artifacts/results/architecture_agnostic_predictions.csv")
     )
     parser.add_argument("--threshold", type=float, default=0.5)
     parser.add_argument("--steps", default="0,10,20,30,40,49")

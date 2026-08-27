@@ -264,7 +264,7 @@ def parse_args():
     parser.add_argument(
         "--output_dir",
         type=Path,
-        default=Path("artifacts/paper_results/architecture_agnostic"),
+        default=Path("artifacts/results/architecture_agnostic"),
     )
     parser.add_argument("--device", default="cuda:0")
     parser.add_argument("--batch_size", type=int, default=1)

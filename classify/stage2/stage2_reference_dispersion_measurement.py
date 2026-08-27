@@ -798,7 +798,6 @@ def cluster_statistics(features: np.ndarray, labels: np.ndarray):
     centers = []
     weights = []
     sizes = []
-    within_weighted = 0.0
     for cluster_id in cluster_ids:
         points = features[
             labels == cluster_id
@@ -814,21 +813,9 @@ def cluster_statistics(features: np.ndarray, labels: np.ndarray):
                 1,
             )
         )
-        distances = (
-            np.linalg.norm(points - center[None, :], axis=1)
-        )
-        within_mean = (
-            float(distances.mean())
-            if len(distances)
-            else 0.0
-        )
         centers.append(center)
         weights.append(weight)
         sizes.append(int(size))
-        within_weighted += (
-            weight
-            * within_mean
-        )
 
     # ---------------------------------------------------------
     # Weighted cluster-center distance
@@ -860,13 +847,6 @@ def cluster_statistics(features: np.ndarray, labels: np.ndarray):
     else:
         between_centers = 0.0
 
-    # ---------------------------------------------------------
-    # Global centroid dispersion
-    # ---------------------------------------------------------
-    global_center = (
-        features.mean(axis=0)
-    )
-    global_dispersion = float(np.linalg.norm(features - global_center[ None, : ], axis=1,).mean())
     return {
         "num_clusters":
             len(centers),
@@ -874,23 +854,13 @@ def cluster_statistics(features: np.ndarray, labels: np.ndarray):
             sizes,
         "between_centers":
             float(between_centers),
-        "within_clusters":
-            float(within_weighted),
-        "global_centroid":
-            global_dispersion,
-        "hybrid":
-            float(between_centers + within_weighted),
     }
 
 
 
-MULTI_SCORE_METRICS = (
-    "within_clusters",
-    "global_centroid",
+STAGE2_METRICS = (
     "between_centers",
-    "hybrid",
     "original_shift",
-    "pairwise_dispersion",
 )
 
 
@@ -955,9 +925,6 @@ def perturbation_response_statistics(
         Median Euclidean distance from the original generation to each
         perturbed generation.
 
-    pairwise_dispersion:
-        Median pairwise Euclidean distance among perturbed generations.
-
     Embeddings are L2 normalized before this function, so Euclidean distance
     is bounded and monotonically related to cosine distance.
     """
@@ -965,10 +932,7 @@ def perturbation_response_statistics(
     perturbed_features = np.asarray(perturbed_features, dtype=np.float32)
 
     if len(perturbed_features) == 0:
-        return {
-            "original_shift": float("nan"),
-            "pairwise_dispersion": float("nan"),
-        }
+        return {"original_shift": float("nan")}
 
     original_distances = np.linalg.norm(
         perturbed_features - original_feature,
@@ -976,33 +940,7 @@ def perturbation_response_statistics(
     )
     original_shift = float(np.median(original_distances))
 
-    pairwise = []
-    for i in range(len(perturbed_features)):
-        for j in range(i + 1, len(perturbed_features)):
-            pairwise.append(
-                float(np.linalg.norm(perturbed_features[i] - perturbed_features[j]))
-            )
-    pairwise_dispersion = float(np.median(pairwise)) if pairwise else 0.0
-
-    return {
-        "original_shift": original_shift,
-        "pairwise_dispersion": pairwise_dispersion,
-    }
-
-
-def parse_metric_names(text: str) -> List[str]:
-    requested = [item.strip() for item in str(text).split(",") if item.strip()]
-    if not requested:
-        requested = list(MULTI_SCORE_METRICS)
-    invalid = [name for name in requested if name not in MULTI_SCORE_METRICS]
-    if invalid:
-        raise ValueError(
-            "Unknown --metric_names: "
-            + ", ".join(invalid)
-            + ". Available: "
-            + ", ".join(MULTI_SCORE_METRICS)
-        )
-    return list(dict.fromkeys(requested))
+    return {"original_shift": original_shift}
 
 
 
@@ -1618,7 +1556,7 @@ def analyze_domain(args, domain: DomainSpec, crop_rows, encoder: ImageEncoder):
         by_prompt.setdefault(prompt_index, {}).setdefault(sample_tag, []).append(index)
 
     required_tags = ["target", "clean_ref", "backdoor_ref"]
-    metric_names = parse_metric_names(args.metric_names)
+    metric_names = STAGE2_METRICS
 
     # Long-form outputs are easier to inspect and plot than one extremely
     # wide row containing all metric/model combinations.
@@ -1827,8 +1765,6 @@ def analyze_domain(args, domain: DomainSpec, crop_rows, encoder: ImageEncoder):
         )
         print(f"[score] {domain.name}/prompt={prompt_index}: {metric_preview}")
 
-    write_csv(root / "per_prompt_metric_scores.csv", metric_rows)
-    # Keep the old filename as an alias for analysis scripts that expect it.
     write_csv(root / "per_prompt_dispersion.csv", metric_rows)
     write_csv(root / "cluster_assignments.csv", assignment_rows)
 
@@ -2011,38 +1947,12 @@ def parse_args():
     # -------------------------------------------------------------------------
     # Dispersion
     # -------------------------------------------------------------------------
-    # Multi-metric Stage-II measurement. --score_mode is retained only for
-    # backward-compatible command parsing; exported measurements are selected
-    # by --metric_names.
-    parser.add_argument(
-        "--score_mode",
-        choices=[
-            "between_centers",
-            "within_clusters",
-            "global_centroid",
-            "hybrid",
-        ],
-        default="within_clusters",
-        help="Legacy single-metric option; multi-metric measurement ignores this value.",
-    )
-    parser.add_argument(
-        "--metric_names",
-        type=str,
-        default=",".join(MULTI_SCORE_METRICS),
-        help=(
-            "Comma-separated Stage-II metrics. Available: "
-            + ",".join(MULTI_SCORE_METRICS)
-        ),
-    )
     parser.add_argument(
         "--min_perturbed_images",
         type=int,
         default=3,
         help="Minimum aggregated perturbed images required per model and base prompt.",
     )
-    # Retained for CLI compatibility; crop count is no longer the statistical
-    # unit after per-image detection aggregation.
-    parser.add_argument("--min_crops_per_group", type=int, default=3)
     parser.add_argument("--min_ref_gap", type=float, default=1e-4)
 
     # -------------------------------------------------------------------------
@@ -2071,9 +1981,6 @@ def parse_args():
 
     if args.min_perturbed_images < 2:
         raise ValueError("--min_perturbed_images must be at least 2")
-
-    # Validate metric names early so invalid runs fail before model loading.
-    parse_metric_names(args.metric_names)
 
     # Empty LoRA path -> None
     for key in [
